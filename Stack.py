@@ -1,30 +1,35 @@
+from DLL import DLL
+
 # LIFO (Last in first out) structure
+
 
 class Stack:
 
-	def __init__(self):
-		self.stack = []
+    def __init__(self):
+        self.stack = DLL()
 
-	def push(self, data):
-		self.stack.append(data)
+    def push(self, data):
+        self.stack.add_head(data)
 
-	def pop(self):
-		# O(1) Running Time
-		if not self.is_empty():
-			return self.stack.pop()
-		else:
-			return None
+    def pop(self):
+        return self.stack.remove_head()
 
-	def peek(self):
-		# O(1) Running Time
-		if not self.is_empty():
-			return self.stack[-1]
-		else:
-			return None
+    def peek(self):
+        return self.stack.head
 
-	def is_empty(self):
-		# O(1) Running Time
-		return self.stack == []
+    def __len__(self):
+        return len(self.stack)
 
-	def __len__(self):
-		return len(self.stack)
+    def __repr__(self):
+        res = []
+        res.append(f'{len(self)} items in stack')
+
+        temp = self.stack.head
+        count = 1
+        while temp is not None:
+            # adding each item to the resulting string
+            res.append(f'Spot {count}: {temp.data}')
+            temp = temp.next
+            count += 1
+
+        return '\n'.join(res)
