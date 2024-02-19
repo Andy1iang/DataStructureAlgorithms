@@ -6,7 +6,7 @@ class Node:
         self.next = None
 
     def __str__(self):
-        return self.data
+        return str(self.data)
 
 
 class DLL:
@@ -49,17 +49,16 @@ class DLL:
 
         self.size += 1
 
+    # given that the DLL is ordered
     def insert(self, data):
-
-        # given that the DLL is ordered
 
         if self.size == 0:
             self.add_head(data)
 
-        elif data < self.head.data:
+        elif data <= self.head.data:
             self.add_head(data)
 
-        elif data > self.tail.data:
+        elif data >= self.tail.data:
             self.add_tail(data)
 
         else:
@@ -170,6 +169,7 @@ class DLL:
         return self.size
 
     def __repr__(self):
+
         res = []
         res.append(f'DLL With {self.size} Nodes, stored at {hex(id(self))}')
 

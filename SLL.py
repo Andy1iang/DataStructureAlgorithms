@@ -1,88 +1,150 @@
 class Node:
 
-	def __init__(self, data):
-		self.data = data
-		self.next = None
+    def __init__(self, data):
+        self.data = data
+        self.next = None
 
-	def __str__(self):
-		return str(self.data)
+    def __str__(self):
+        return str(self.data)
 
 
 class SLL:
 
-	def __init__(self):
-		self.head = None
-		self.nodes_count = 0
+    def __init__(self):
 
-	def insert_start(self, data):
-		# O(1) running time
-		self.nodes_count += 1
-		new_node = Node(data)
-		if self.head is None:
-			self.head = new_node
-		else:
-			new_node.next = self.head
-			self.head = new_node
+        self.head = None
+        self.tail = None
+        self.size = 0
 
-	def insert_end(self, data):
-		# O(N) running time
-		self.nodes_count += 1
-		new_node = Node(data)
-		if self.head is None:
-			self.head = new_node
-		else:
-			temp = self.head
-			while temp.next is not None:
-				temp = temp.next
-			temp.next = new_node
+    def add_head(self, data):
 
-	def traverse(self):
-		# O(N) running time
-		temp = self.head
-		while temp is not None:
-			print(temp)
-			temp = temp.next
+        newNode = Node(data)
 
-	def reverse(self):
-		# O(N) running time
-		curr_node = self.head
-		prev_node = None
-		next_node = None
-		while curr_node is not None:
-			# setting next node variable to the next node
-			next_node = curr_node.next
-			# setting the actual current node's next link to the previous node (reverse)
-			curr_node.next = prev_node
-			# sitting previous node variable to current node
-			prev_node = curr_node
-			# sitting current node variable to the next node
-			curr_node = next_node
+        if self.size == 0:
+            self.head = newNode
+            self.tail = newNode
 
-		# setting the head node variable to the last node (current node is None, prev is last node)
-		self.head = prev_node
+        else:
+            newNode.next = self.head
+            self.head = newNode
 
-	def remove(self, data):
-		# O(N) running time
-		if self.head is None:
-			return None
-		else:
-			temp = self.head
-			prev = None
+        self.size += 1
 
-			while temp is not None and temp.data != data:
-				prev = temp
-				temp = temp.next
+    def add_tail(self, data):
 
-			if temp is None:
-				return None
+        newNode = Node(data)
 
-			self.nodes_count -= 1
-			if prev is None:
-				self.head = temp.next
-			else:
-				prev.next = temp.next
+        if self.size == 0:
+            self.head = newNode
+            self.tail = newNode
 
-			return temp
+        else:
+            self.tail.next = newNode
+            self.tail = newNode
 
-	def list_size(self):
-		return self.nodes_count
+        self.size += 1
+
+    # given that the SLL is ordered
+    def insert(self, data):
+
+        newNode = Node(data)
+
+        if self.size == 0:
+            self.add_head(data)
+
+        elif data <= self.head.data:
+            self.add_head(data)
+
+        elif data >= self.tail.data:
+            self.add_tail(data)
+
+        else:
+            temp = self.head
+            while temp.next is not None and temp.next.data < data:
+                temp = temp.next
+
+            newNode.next = temp.next
+            temp.next = newNode
+            self.size += 1
+
+    def remove_head(self):
+
+        if self.size == 0:
+            return None
+
+        elif self.size == 1:
+            temp = self.head
+            self.head = None
+            self.tail = None
+            self.size -= 1
+            return temp
+
+        else:
+            temp = self.head
+            self.head = self.head.next
+            self.size -= 1
+            return temp
+
+    def remove(self, data):
+
+        if self.size == 0:
+            return None
+
+        elif self.head.data == data:
+            self.size -= 1
+            return self.remove_head()
+
+        else:
+            prev = None
+            temp = self.head
+            while temp is not None and temp.data != data:
+                prev = temp
+                temp = temp.next
+
+            if temp is None:
+                return None
+            else:
+                self.size -= 1
+                prev.next = temp.next
+                return temp
+
+    def traverse(self):
+
+        temp = self.head
+        while temp is not None:
+            print(temp)
+            temp = temp.next
+
+    def reverse(self):
+
+        curr = self.head
+        prev = None
+        next = None
+        while curr is not None:
+            # setting next node variable to the next node
+            next = curr.next
+            # setting the actual current node's next link to the previous node (reverse)
+            curr.next = prev
+            # sitting previous node variable to current node
+            prev = curr
+            # sitting current node variable to the next node
+            curr = next
+
+        # setting the head node variable to the last node (current node is None, prev is last node)
+        self.head = prev
+
+    def __len__(self):
+        return self.size
+
+    def __repr__(self):
+
+        res = []
+        res.append(f'SLL With {self.size} Nodes, stored at {hex(id(self))}')
+        temp = self.head
+        idx = 1
+        while temp is not None:
+            res.append(f'Node {idx}: {str(temp)}')
+            temp = temp.next
+            idx += 1
+
+        return '\n'.join(res)
