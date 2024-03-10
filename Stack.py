@@ -1,7 +1,5 @@
 from DLL import DLL
 
-# LIFO (Last in first out) structure
-
 
 class Stack:
 

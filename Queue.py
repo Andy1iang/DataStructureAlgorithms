@@ -1,7 +1,5 @@
 from DLL import DLL
 
-# FIFO (First in First out) structure
-
 
 class Queue:
 
