@@ -16,6 +16,7 @@ class BST:
         self.root = None
 
     def insert(self, data):
+        # if the tree is empty, then the root is the data
         if self.root is None:
             self.root = Node(data)
 
@@ -24,7 +25,7 @@ class BST:
 
     def insertNode(self, data, node: Node):
         # recursive call to traverse to the node that it should to added to, then add it in the base case
-        if data < node.data:
+        if data <= node.data:
 
             if node.left is not None:
                 self.insertNode(data, node.left)
@@ -41,14 +42,15 @@ class BST:
     def remove(self, data):
         # recursively traversing to the node to remove
         temp = self.find(data, self.root)
-        parent: Node = temp.parent
 
-        # base case (when there are no nodes)
+        # When the target node is not found
         if temp is None:
             return None
 
-        # another base case (when node is leaf node)
-        elif temp.left is None and temp.right is None:
+        parent = temp.parent
+
+        # when node is leaf node
+        if temp.left is None and temp.right is None:
             if parent is None:  # case when it's the root node
                 self.root = None
             else:  # removing the connection
@@ -79,11 +81,15 @@ class BST:
 
         # case where there are two child nodes
         else:
-            temp.data = self.getMax(temp.left)  # getting the predecessor
-            self.remove(temp.data)  # swapping and removing it
+            # getting the predecessor
+            predecessor = self.getMax(temp.left)  # getting the predecessor
+            # swapping the data
+            temp.data, predecessor.data = predecessor.data, temp.data  
+            # removing the target data (now switched)
+            predecessor.parent.right = None
 
     # recursive function to find a node
-    def find(self, data, node: Node):
+    def find(self, data, node):
         if node is None:
             return None
 
@@ -95,17 +101,14 @@ class BST:
                 return self.find(data, node.left)
             else:
                 return self.find(data, node.right)
-
+    
     def getMax(self, node=None):
         # default to starting from root node
         if node is None:
-            if self.root is None:
-                return None
-            else:
-                node = self.root
+            return None
 
-        if node.right is None:
-            return node.data
+        elif node.right is None:
+            return node
 
         else:
             return self.getMax(node.right)
@@ -136,7 +139,6 @@ class BST:
         if node.right is not None:
             self.traverseInOrder(node.right)
 
-    # checking for math depth
     def maxDepth(self, node: None | Node):
         if node is None:  # base case
             return 0
