@@ -79,7 +79,7 @@ class MaxHeap:
         for _ in range(self.size):
             result.append(self.extractMax())
         return result
-    
+
 
 class HeapTransformer:
 
@@ -89,52 +89,36 @@ class HeapTransformer:
 
     def transform(self):
         # performing heapify on all internal nodes in reverse order
-        for i in range(len(self.heap)//2,-1,-1):
+        for i in range(len(self.heap)//2, -1, -1):
             self._heapify(i)
 
     # max heap to min heap transformer
     def _heapify(self, idx):
-        
-        left = idx*2 +1 
-        right = idx*2 +2
-        
+
+        left = idx*2 + 1
+        right = idx*2 + 2
+
         if left >= len(self.heap):
             return True
-            
+
         elif right >= len(self.heap):
             if self.heap[idx] > self.heap[left]:
-                self.heap[idx],self.heap[left] = self.heap[left], self.heap[idx]
+                self.heap[idx], self.heap[left] = self.heap[left], self.heap[idx]
                 return True
-                
+
         else:
             if self.heap[left] < self.heap[right]:
                 if self.heap[idx] > self.heap[left]:
-                    self.heap[idx],self.heap[left] = self.heap[left], self.heap[idx]
+                    self.heap[idx], self.heap[left] = self.heap[left], self.heap[idx]
                     self._heapify(left)
-                
+
                 else:
                     return True
-                    
-                    
+
             else:
                 if self.heap[idx] > self.heap[right]:
-                    self.heap[idx],self.heap[right] = self.heap[right], self.heap[idx]
+                    self.heap[idx], self.heap[right] = self.heap[right], self.heap[idx]
                     self._heapify(right)
-                    
+
                 else:
                     return True
-
-
-
-test = MaxHeap()
-test.insert(210)
-test.insert(100)
-test.insert(23)
-test.insert(2)
-test.insert(5)
-
-test1 = HeapTransformer(test.heap,test.size)
-test1.transform()
-
-print(test1.heap)
-
