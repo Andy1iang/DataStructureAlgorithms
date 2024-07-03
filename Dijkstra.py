@@ -41,7 +41,7 @@ class Dijkstra:
                 continue
 
             # check all neighboring nodes
-            # if we discover a shorted path:
+            # if we discover a shorter path:
             # update the neighboring nodes & push it to the heap
             for edge in vertex.edges:
                 u = edge.src
